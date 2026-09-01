@@ -40,6 +40,7 @@ class EncoderGRU(nn.Module):
         # TODO: Assign to local variable `sequence_of_output_features` and a placeholder
         # the outputs of padding the packed sequence of output features.
         # Specify that the input tensor is organized by batch in its first dimension.
+        # Specify that the total length of the padded sequence is equal to the second dimension of the source.
         raise NotImplementedError
 
         return sequence_of_output_features, tensor_with_final_hidden_states
