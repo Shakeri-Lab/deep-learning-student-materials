@@ -1,4 +1,11 @@
-from importlib import import_module
+"""Train the Assignment 3 Seq2Seq baseline without attention.
+
+The implementation modules are loaded explicitly from the sibling Assignment_3
+directory so this runner cannot accidentally import the Assignment 4 attention
+model.
+"""
+
+from importlib.util import module_from_spec, spec_from_file_location
 
 from urllib.request import urlretrieve
 from pathlib import Path
@@ -22,6 +29,34 @@ import time
 import math
 
 from collections import Counter
+
+
+def _load_module(module_name, module_path):
+    """Load one Python module from an explicit file path."""
+    if not module_path.is_file():
+        raise FileNotFoundError(f"Required Assignment 3 file not found: {module_path}")
+
+    spec = spec_from_file_location(module_name, module_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Could not load Python module from {module_path}")
+
+    module = module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_assignment_modules():
+    """Load the Assignment 3 model and training code plus Assignment 4 evaluation."""
+    assignment_4_dir = Path(__file__).resolve().parent
+    assignment_3_dir = assignment_4_dir.parent / "Assignment_3"
+
+    return (
+        _load_module("assignment3_encoder_gru", assignment_3_dir / "EncoderGRU.py"),
+        _load_module("assignment3_decoder_gru", assignment_3_dir / "DecoderGRU.py"),
+        _load_module("assignment3_seq2seq", assignment_3_dir / "Seq2Seq.py"),
+        _load_module("assignment3_train", assignment_3_dir / "train.py"),
+        _load_module("assignment4_evaluate_baseline", assignment_4_dir / "evaluate.py"),
+    )
 
 
 def run(EncoderGRU, DecoderGRU, Seq2Seq, train, evaluate):
@@ -391,11 +426,7 @@ def run(EncoderGRU, DecoderGRU, Seq2Seq, train, evaluate):
 
 
 def main() -> None:
-    EncoderGRU = import_module("EncoderGRU")
-    DecoderGRU = import_module("DecoderGRU")
-    Seq2Seq = import_module("Seq2Seq")
-    train = import_module("train")
-    evaluate = import_module("evaluate")
+    EncoderGRU, DecoderGRU, Seq2Seq, train, evaluate = load_assignment_modules()
     run(EncoderGRU.EncoderGRU, DecoderGRU.DecoderGRU, Seq2Seq.Seq2Seq, train.train, evaluate.evaluate)
 
 
