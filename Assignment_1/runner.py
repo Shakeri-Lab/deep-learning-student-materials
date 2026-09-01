@@ -458,7 +458,7 @@ def main() -> None:
     parser.add_argument('--seed', type=int, default=42)
     args = parser.parse_args()
 
-    hw = import_module(os.path.join(args.hw, 'hw1_impl'))
+    hw = import_module(os.path.join(args.hw, 'implementation'))
     outname = args.outname
     seed = args.seed
     print('Using seed:', seed)
