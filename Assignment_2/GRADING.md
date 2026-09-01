@@ -1,6 +1,6 @@
 # Assignment 2 Grading
 
-Assignment 2 is graded out of 100 points.
+Assignment 2 is graded out of 100 points. 
 
 Submit `VGGNet.py`, `NiN.py`, `GoogLeNet.py`, `ResNet.py`, `transfer_learning.py`, and `MobileNet.py`. Do not submit `runner.py`.
 
